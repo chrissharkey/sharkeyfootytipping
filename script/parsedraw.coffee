@@ -1,4 +1,5 @@
 fs = require 'fs'
+mysql = require '../lib/mysql'
 teams = ['Knights', 'Eels', 'Bulldogs', 'Tigers', 'Panthers', 'Broncos', 'Storm', 'Raiders', 'Roosters', 'Rabbitohs', 'Dragons', 'Warriors', 'Sharks', 'Titans', 'SeaEagles', 'Cowboys']
 daysOfWeek = ['Monday,', 'Tuesday,', 'Wednesday,', 'Thursday,', 'Friday,', 'Saturday,', 'Sunday,']
 currentRound = null
@@ -7,8 +8,12 @@ currentStadium = null
 currentChannel = null
 currentTime = null
 currentHashtag = null
+stadiums = {}
+rounds = {}
+roundMap: 
+  One: 1, Two: 2, Three: 3, Four: 4, Five: 5, Six: 6, Seven: 7, Eight: 8, Nine: 9, Ten: 10, Eleven: 11, Twelve: 12, Thirteen: 13, Fourteen: 14, Fifteen: 15, Sixteen: 16, Seventeen: 17, Eighteen: 18, Nineteen: 19, Twenty: 20
 roundLimitReached = false
-rawDraw = fs.readFileSync('./draw.txt').toString().replace(/Sea Eagles/g, 'SeaEagles').split "\n"
+rawDraw = fs.readFileSync('./script/draw.txt').toString().replace(/Sea Eagles/g, 'SeaEagles').split "\n"
 rawDraw.forEach (line) ->
   return if roundLimitReached
   parts = line.split " "
