@@ -6,6 +6,11 @@ The Sharkey NRL Footy tipping competition was first created in 2006 and ran for 
 
 The original system ended up hosting over 100 competitions and I hope to revive many of those when this system is live.
 
+I am setting up this new system with similar goals to the first:
+
+1. Revive the footy tipping competition for the Sharkey Family and anyone else who would like to use it
+2. Learn a new language and framework: Elixir/Phoenix
+
 When the system is live I will post the production URL here. You can use the live system to host your own NRL Footy Tipping competition, or you can clone this project and host your own system.
 
 ## How to run the code
@@ -19,6 +24,8 @@ Start RethinkDB on port 8081:
 `rethinkdb --http-port 8081`
 
 ### Install Elixir
+
+Instructions available [on the Elixir website](http://elixir-lang.org/install.html)
 
 ### Run the App
 

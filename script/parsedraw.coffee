@@ -1,5 +1,11 @@
+mysqll = require 'mysql'
+mysql = mysqll.createConnection
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'sharkeyfootytipping'
+mysql.connect() 
 fs = require 'fs'
-mysql = require '../lib/mysql'
 teams = ['Knights', 'Eels', 'Bulldogs', 'Tigers', 'Panthers', 'Broncos', 'Storm', 'Raiders', 'Roosters', 'Rabbitohs', 'Dragons', 'Warriors', 'Sharks', 'Titans', 'SeaEagles', 'Cowboys']
 daysOfWeek = ['Monday,', 'Tuesday,', 'Wednesday,', 'Thursday,', 'Friday,', 'Saturday,', 'Sunday,']
 currentRound = null
