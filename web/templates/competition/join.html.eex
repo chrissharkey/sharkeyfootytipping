@@ -1,0 +1,12 @@
+<div class="col-lg-12">
+  <h2>Join a Competition</h2>
+  <p>The existing competitions are listed below, to join one click on the link. An administrator of that competition will need to approve you before you will be allowed into the competition.</p>
+  <p>To start your own competition <a href="/new">select this link</a></p>
+  <div id="competitions">
+    <ul>
+      <%= for competition <- competitions do %>
+        <li><a href="/join/<%= competition["id"] %>"><%= competition["name"] %></a></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

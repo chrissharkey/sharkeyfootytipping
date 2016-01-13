@@ -17,6 +17,8 @@ defmodule Example.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/join", CompetitionController, :join
+    get "/new", CompetitionController, :new
     get "/init-table", PageController, :init
   end
 

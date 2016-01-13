@@ -6,13 +6,13 @@
     <h4>Get involved now:</h4>
     <ul>
       <li>
-        <a href="http://phoenixframework.org/docs/overview">Login to Competition</a>
+        <a href="/login">Login to Competition</a>
       </li>
       <li>
-        <a href="http://hexdocs.pm/phoenix">Join an Existing Competition</a>
+        <a href="/join">Join an Existing Competition</a>
       </li>
       <li>
-        <a href="https://github.com/phoenixframework/phoenix">Start a New Competition</a>
+        <a href="/new">Start a New Competition</a>
       </li>
     </ul>
   </div>
@@ -21,13 +21,13 @@
     <h4>Other Links:</h4>
     <ul>
       <li>
-        <a href="http://groups.google.com/group/phoenix-talk">About the Competition</a>
+        <a href="/about">About the Competition</a>
       </li>
       <li>
-        <a href="http://webchat.freenode.net/?channels=elixir-lang">About the Code</a>
+        <a href="/about-the-code">About the Code</a>
       </li>
       <li>
-        <a href="https://twitter.com/elixirphoenix">Send Feedback</a>
+        <a href="/feedback">Send Feedback</a>
       </li>
     </ul>
   </div>

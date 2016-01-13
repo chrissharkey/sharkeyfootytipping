@@ -17,18 +17,7 @@ defmodule Example.PageController do
   # fetch all posts and return them as JSON
   def index(conn, _params) do
     Competition.init
-    case Competition.create_competition("Sharkey Footy Tipping Competition", 'aaaaaaaaa') do
-      {:ok, short_name} ->
-        Competition.delete_competition(short_name)
-      {:error, _} ->
-        Competition.delete_competition('sharkeyfootytippingcompetition')
-      _ ->
-        Competition.init
-    end
-
-    # |> Example.Database.run
-    # |> IO.inspect
+    Competition.create_competition("Sharkey Footy Tipping Competition", 'aaaaaaaaa')
     render conn, "index.html"
-    # json conn, results
   end
 end

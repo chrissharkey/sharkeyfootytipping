@@ -21,29 +21,13 @@ defmodule Competition do
     end
   end
 
-  def delete_competition(short_name) do
-    table("competitions") |> filter(%{short_name: short_name}) |> delete |> Example.Database.run
+  def delete_competition(competition_id) do
+    table("competitions") |> filter(%{id: competition_id}) |> delete |> Example.Database.run
   end
 
-  def change_owner(competition_id, player_id) do
-  end
-
-  def add_administrator(competition_id, player_id) do
-    
-
-  end
-
-  def delete_administrator(competition_id, player_id) do
-    
-  end
-
-  def is_administrator?(competition_id, player_id) do
-    
-  end
-
-  def get_ladder do
-    
-
+  def get_all do
+    tasks = table("competitions") |> Example.Database.run
+    tasks.data
   end
 
   # Private methods
