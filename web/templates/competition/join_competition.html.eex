@@ -1,0 +1,47 @@
+<div class="col-lg-12">
+  <h2>Join <%= competition_data(@competition_id)["name"] %></h2>
+  <%= if @logged_in do %>
+    <p>You're logged in as <strong>Chris Sharkey</strong></p>
+    <%= if @competition_member do %>
+      <p>You're already a member of this competition.</p>
+    <%= else %>
+      <p>Use the button below to join this competition in addition to any other competitions you belong to.</p>
+      <form>
+        <button type="submit" class="btn btn-primary">Join <%= competition_data(@competition_id)["name"] %></button>
+      </form>
+    <% end %>
+  <%= else %>
+    <!-- Normal Join Form //-->
+    <p>To join the competition, fill in all of the fields below. The competition administrator will then approve you and you'll be in the competition.</p>
+    <form>
+      <div class="form-group">
+        <label for="inputFirstName">First Name</label>
+        <input type="email" class="form-control" id="inputFirstName" placeholder="First Name">
+      </div>
+      <div class="form-group">
+        <label for="inputLastName">Last Name</label>
+        <input type="email" class="form-control" id="inputLastName" placeholder="Last Name">
+      </div>
+      <div class="form-group">
+        <label for="inputNickname">Nickname</label>
+        <p>Your nickname is how we'll refer to you in the competition. This can be your real name or something funny like "pickletits". You can change this later.</p>
+        <input type="email" class="form-control" id="inputNickname" placeholder="Nickname">
+      </div>
+      <div class="form-group">
+        <label for="inputEmail">Email</label>
+        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="inputMobile">Mobile Phone</label>
+        <p>We'll use this to SMS you reminders so you never miss your tips.</p>
+        <input type="email" class="form-control" id="inputMobile" placeholder="Mobile">
+      </div>
+      <div class="form-group">
+        <label for="inputPassword">Password</label>
+        <p>You'll use your password to login, write it down now.</p>
+        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary">Join <%= competition_data(@competition_id)["name"] %></button>
+    </form>
+  <% end %>
+</div>

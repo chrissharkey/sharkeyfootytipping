@@ -18,6 +18,7 @@ defmodule Example.Router do
 
     get "/", PageController, :index
     get "/join", CompetitionController, :join
+    get "/join/:competition_id", CompetitionController, :join_competition
     get "/new", CompetitionController, :new
     get "/init-table", PageController, :init
   end
