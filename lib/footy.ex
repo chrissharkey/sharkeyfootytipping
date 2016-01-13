@@ -1,4 +1,4 @@
-defmodule Example do
+defmodule Footy do
   use Application
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
@@ -8,26 +8,26 @@ defmodule Example do
 
     children = [
       # Start the endpoint when the application starts
-      supervisor(Example.Endpoint, []),
+      supervisor(Footy.Endpoint, []),
       # Here you could define other workers and supervisors as children
-      # worker(Example.Worker, [arg1, arg2, arg3]),
-      worker(Example.Database, [])
+      # worker(Footy.Worker, [arg1, arg2, arg3]),
+      worker(Footy.Database, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Example.Supervisor]
+    opts = [strategy: :one_for_one, name: Footy.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    Example.Endpoint.config_change(changed, removed)
+    Footy.Endpoint.config_change(changed, removed)
     :ok
   end
 end
 
-defmodule Example.Database do
+defmodule Footy.Database do
   use RethinkDB.Connection
 end

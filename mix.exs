@@ -1,8 +1,8 @@
-defmodule Example.Mixfile do
+defmodule Footy.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :example,
+    [app: :footy,
      version: "0.0.1",
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
@@ -16,7 +16,7 @@ defmodule Example.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [mod: {Example, []},
+    [mod: {Footy, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger]]
   end
 

@@ -1,5 +1,5 @@
-defmodule Example.Router do
-  use Example.Web, :router
+defmodule Footy.Router do
+  use Footy.Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,7 +13,7 @@ defmodule Example.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Example do
+  scope "/", Footy do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
@@ -24,7 +24,7 @@ defmodule Example.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Example do
+  # scope "/api", Footy do
   #   pipe_through :api
   # end
 end

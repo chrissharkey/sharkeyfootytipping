@@ -1,3 +1,3 @@
-defmodule Example.LayoutView do
-  use Example.Web, :view
+defmodule Footy.LayoutView do
+  use Footy.Web, :view
 end

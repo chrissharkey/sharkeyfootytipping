@@ -1,5 +1,5 @@
-defmodule Example.CompetitionView do
-  use Example.Web, :view
+defmodule Footy.CompetitionView do
+  use Footy.Web, :view
 
   def competitions do
     Competition.get_all

@@ -1,12 +1,12 @@
-defmodule Example.Web do
+defmodule Footy.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use Example.Web, :controller
-      use Example.Web, :view
+      use Footy.Web, :controller
+      use Footy.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -26,7 +26,7 @@ defmodule Example.Web do
     quote do
       use Phoenix.Controller
 
-      import Example.Router.Helpers
+      import Footy.Router.Helpers
     end
   end
 
@@ -40,7 +40,7 @@ defmodule Example.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import Example.Router.Helpers
+      import Footy.Router.Helpers
     end
   end
 

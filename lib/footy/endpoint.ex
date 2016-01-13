@@ -1,7 +1,7 @@
-defmodule Example.Endpoint do
+defmodule Footy.Endpoint do
   use Phoenix.Endpoint, otp_app: :example
 
-  socket "/socket", Example.UserSocket
+  socket "/socket", Footy.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -35,5 +35,5 @@ defmodule Example.Endpoint do
     key: "_example_key",
     signing_salt: "cC57xx5H"
 
-  plug Example.Router
+  plug Footy.Router
 end

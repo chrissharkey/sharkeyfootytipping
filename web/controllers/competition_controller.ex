@@ -1,5 +1,5 @@
-defmodule Example.CompetitionController do
-  use Example.Web, :controller
+defmodule Footy.CompetitionController do
+  use Footy.Web, :controller
   require Logger
 
   def join(conn, _params) do

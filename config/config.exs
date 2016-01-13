@@ -1,17 +1,12 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
-#
-# This configuration file is loaded before any dependency and
-# is restricted to this project.
 use Mix.Config
 
 # Configures the endpoint
-config :example, Example.Endpoint,
+config :example, Footy.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "fmJKqd3ZsIdqAghT3s+dGJCaofe7ywM4ll74U850vMXGTiyOcxxFytEp6ALpcdRH",
   render_errors: [accepts: ~w(html json)],
-  pubsub: [name: Example.PubSub,
+  pubsub: [name: Footy.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
