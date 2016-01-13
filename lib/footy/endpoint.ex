@@ -1,5 +1,5 @@
 defmodule Footy.Endpoint do
-  use Phoenix.Endpoint, otp_app: :example
+  use Phoenix.Endpoint, otp_app: :footy
 
   socket "/socket", Footy.UserSocket
 
@@ -8,7 +8,7 @@ defmodule Footy.Endpoint do
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
   plug Plug.Static,
-    at: "/", from: :example, gzip: false,
+    at: "/", from: :footy, gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the

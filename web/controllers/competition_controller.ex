@@ -6,9 +6,9 @@ defmodule Footy.CompetitionController do
     render conn, "join.html"
   end
 
-  def join_competition(conn, _params) do
+  def join_competition(conn, params) do
     conn
-      |> assign(:competition_id, _params["competition_id"])
+      |> assign(:competition_id, params["competition_id"])
       |> assign(:logged_in, true)
       |> assign(:competition_member, false)
       |> assign(:player, %{name: "Christopher Sharkey"})

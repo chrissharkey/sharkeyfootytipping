@@ -1,7 +1,7 @@
 use Mix.Config
 
 # Configures the endpoint
-config :example, Footy.Endpoint,
+config :footy, Footy.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "fmJKqd3ZsIdqAghT3s+dGJCaofe7ywM4ll74U850vMXGTiyOcxxFytEp6ALpcdRH",
