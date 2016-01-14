@@ -32,7 +32,7 @@ defmodule Footy.Endpoint do
 
   plug Plug.Session,
     store: :cookie,
-    key: "_example_key",
+    key: "sharkeyfootytipping",
     signing_salt: "cC57xx5H"
 
   plug Footy.Router
