@@ -1,11 +1,5 @@
 defmodule Competition do
-  import RethinkDB.Query, only: [table_create: 1, table: 1, insert: 2, delete: 1, filter: 2]
-  require Logger
-
-  def init do
-    table_create("competitions")
-    |> Footy.Database.run
-  end
+  import RethinkDB.Query, only: [table: 1, insert: 2, delete: 1, filter: 2]
 
   def create_competition(name, player_id) do
     short_name = Regex.replace(~r/[^a-z]/, String.downcase(name), "")
@@ -18,23 +12,26 @@ defmodule Competition do
   end
 
   def delete_competition(competition_id) do
-    table("competitions") |> filter(%{id: competition_id}) |> delete |> Footy.Database.run
+    table("competitions") 
+    |> filter(%{id: competition_id}) 
+    |> delete 
+    |> Footy.Database.run
   end
 
   def get_all do
-    tasks = table("competitions") |> Footy.Database.run
-    tasks.data
+    table("competitions") 
+    |> Footy.Database.run
+    |> Map.get(:data)
   end
 
   def get(competition_id) do
-    competition = table("competitions")
+    table("competitions")
     |> filter(%{id: competition_id})
     |> Footy.Database.run
-    Logger.debug "> competition data #{inspect hd(competition.data)}"
-    hd(competition.data)
+    |> Map.get(:data)
+    |> List.first
   end
 
-  # Private methods
   defp exists?(short_name) do
     competition = table("competitions")
     |> filter(%{short_name: short_name})

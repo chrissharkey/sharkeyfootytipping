@@ -1,5 +1,5 @@
 <div class="col-lg-12">
-  <h2>Join <%= competition_data(@competition_id)["name"] %></h2>
+  <h2>Join <%= @competition["name"] %></h2>
   <%= if @logged_in do %>
     <p>You're logged in as <strong>Chris Sharkey</strong></p>
     <%= if @competition_member do %>
@@ -7,7 +7,7 @@
     <%= else %>
       <p>Use the button below to join this competition in addition to any other competitions you belong to.</p>
       <form>
-        <button type="submit" class="btn btn-primary">Join <%= competition_data(@competition_id)["name"] %></button>
+        <button type="submit" class="btn btn-primary">Join <%= @competition["name"] %></button>
       </form>
     <% end %>
   <%= else %>
@@ -41,7 +41,7 @@
         <p>You'll use your password to login, write it down now.</p>
         <input type="password" class="form-control" id="inputPassword" placeholder="Password">
       </div>
-      <button type="submit" class="btn btn-primary">Join <%= competition_data(@competition_id)["name"] %></button>
+      <button type="submit" class="btn btn-primary">Join <%= @competition["name"] %></button>
     </form>
   <% end %>
 </div>

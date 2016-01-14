@@ -4,7 +4,7 @@
   <p>To start your own competition <a href="/new">select this link</a></p>
   <div id="competitions">
     <ul>
-      <%= for competition <- competitions do %>
+      <%= for competition <- @competitions do %>
         <li><a href="/join/<%= competition["id"] %>"><%= competition["name"] %></a></li>
       <% end %>
     </ul>
