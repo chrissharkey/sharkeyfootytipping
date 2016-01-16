@@ -17,7 +17,7 @@ defmodule Footy.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [mod: {Footy, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger]]
+     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :comeonin]]
   end
 
   # Specifies which paths to compile per environment
@@ -32,6 +32,8 @@ defmodule Footy.Mixfile do
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:rethinkdb, "~> 0.1.1"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:comeonin, "~> 2.0"},
+     { :uuid, "~> 1.1" }]
   end
 end

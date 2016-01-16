@@ -19,6 +19,7 @@ defmodule Footy.Router do
     get "/", PageController, :index
     get "/join", CompetitionController, :join
     get "/join/:competition_id", CompetitionController, :join_competition
+    post "/join/:competition_id", CompetitionController, :join_competition_post
     get "/new", CompetitionController, :new
     get "/init-table", PageController, :init
   end

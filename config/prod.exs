@@ -15,9 +15,14 @@ config :footy, Footy.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [host: "sharkeyfootytipping.com", port: 80],
   cache_static_manifest: "priv/static/manifest.json"
-
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
+  
 # Do not print debug messages in production
 config :logger, level: :info
+
+config :phoenix, Footy.Router,
+  session: [store: :cookie,
+            key: "sharkeyfootytipping"]
 
 # ## SSL Support
 #
@@ -58,4 +63,4 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-import_config "prod.secret.exs"
+#import_config "prod.secret.exs"

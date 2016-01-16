@@ -5,6 +5,7 @@ defmodule Database do
     table_create("competitions") |> Footy.Database.run
     table_create("players")      |> Footy.Database.run
     table_create("sessions")     |> Footy.Database.run
+    # Activity log?
   end
 
 end
