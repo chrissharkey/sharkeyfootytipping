@@ -10,17 +10,17 @@ defmodule Footy.CompetitionController do
   end
 
   def join_competition(conn, params) do
-    render_competition(conn, params)
+    render_join_competition(conn, params)
   end
 
   def join_competition_post(conn, params) do
     case Competition.join(get_session(conn, :session_id), params) do
       {:error, reason} ->
         conn = conn |> put_flash(:error, reason)
-        render_competition conn, params
+        render_join_competition conn, params
       {:invalid, errors} ->
         conn = conn |> put_flash(:error, "Not all of the fields were present and valid, please try again")
-        render_competition conn, params, errors
+        render_join_competition conn, params, errors
       {:ok, msg} ->
         conn
         |> put_flash(:info, msg)
@@ -28,7 +28,7 @@ defmodule Footy.CompetitionController do
     end
   end
 
-  defp render_competition(conn, params, errors \\ %{}) do
+  defp render_join_competition(conn, params, errors \\ %{}) do
     competition = Competition.get(params["competition_id"])
     unless competition do
       conn
@@ -44,6 +44,34 @@ defmodule Footy.CompetitionController do
       |> assign(:competition_member, Competition.is_member?(competition["id"], player))
       |> render("join_competition.html")
     end
+  end
+
+  def new_competition(conn, params) do
+    render_new_competition(conn, params)
+  end
+
+  def new_competition_post(conn, params) do
+    case Competition.new(get_session(conn, :session_id), params) do
+      {:error, reason} ->
+        conn = conn |> put_flash(:error, reason)
+        render_new_competition conn, params
+      {:invalid, errors} ->
+        conn = conn |> put_flash(:error, "Not all of the fields were present and valid, please try again")
+        render_new_competition conn, params, errors
+      {:ok, msg} ->
+        conn
+        |> put_flash(:info, msg)
+        |> redirect(to: "/competition/#{params["competition_id"]}")
+    end
+  end
+
+  defp render_new_competition(conn, params, errors \\ %{}) do
+    player = Player.get_by_session(get_session(conn, :session_id))
+    conn
+    |> assign(:player, player)
+    |> assign(:errors, errors)
+    |> assign(:params, params)
+    |> render("new_competition.html")
   end
 
 end

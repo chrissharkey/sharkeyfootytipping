@@ -1,0 +1,75 @@
+<div class="col-lg-12">
+  <h2>Create a new NRL tipping competition</h2>
+  <%= if @player do %>
+    <p>You're logged in as <strong><%= @player["first"] %> <%= @player["last"] %></strong></p>
+    <p>Enter the name of the competition that you wish to create.</p>
+    <form method="post">
+      <input type="hidden" name="_csrf_token" value="<%= csrf_token(@conn) %>">
+      <button type="submit" class="btn btn-primary">Join <%= @competition["name"] %></button>
+    </form>
+  <%= else %>
+    <!-- Normal Join Form //-->
+    <p><em>Are you already a member of a competition? <a href="/login">Login here</a> before creating your competition so that you can have both competitions on the same account.</em></p>
+    <p>To create a new competition, fill in all of the fields below. This will create the competition and add you as a member of that competition.</p>
+    <form method="post">
+      <input type="hidden" name="_csrf_token" value="<%= csrf_token(@conn) %>">
+      <input type="hidden" name="competition_id" value="<%= @competition["id"] %>">
+      <div class="form-group<%= if Map.get(@errors, :competition_name), do: " has-error", else: "" %>">
+        <label for="inputCompetitionName">Competition Name*</label>
+        <%= if Map.get(@errors, :competition_name) do %>
+          <p style="color:red"><%= "#{elem(Map.get(@errors, :competition_name), 2)}" %></p>
+        <%= end %>
+        <input type="text" name="competition_name" class="form-control" id="inputCompetitionMame" placeholder="Competition Name" value="<%= @params["competition_name"] %>">
+      </div>
+      <div class="form-group<%= if Map.get(@errors, :first), do: " has-error", else: "" %>">
+        <label for="inputFirst">First Name*</label>
+        <%= if Map.get(@errors, :first) do %>
+          <p style="color:red"><%= "#{elem(Map.get(@errors, :first), 2)}" %></p>
+        <%= end %>
+        <input type="text" name="first" class="form-control" id="inputFirst" placeholder="First Name" value="<%= @params["first"] %>">
+      </div>
+      <div class="form-group<%= if Map.get(@errors, :last), do: " has-error", else: "" %>">
+        <label for="inputLast">Last Name*</label>
+        <%= if Map.get(@errors, :last) do %>
+          <p style="color:red"><%= "#{elem(Map.get(@errors, :last), 2)}" %></p>
+        <%= end %>
+        <input type="text" name="last" class="form-control" id="inputLast" placeholder="Last Name" value="<%= @params["last"] %>">
+      </div>
+      <div class="form-group<%= if Map.get(@errors, :nickname), do: " has-error", else: "" %>">
+        <label for="inputNickname">Nickname*</label>
+        <%= if Map.get(@errors, :nickname) do %>
+          <p style="color:red"><%= "#{elem(Map.get(@errors, :nickname), 2)}" %></p>
+        <%= else %>
+          <p>How we'll refer to you in the competition. This can be your real name or something funny like "pickletits".</p>
+        <%= end %>
+        <input type="text" name="nickname" class="form-control" id="inputNickname" placeholder="Nickname" value="<%= @params["nickname"] %>">
+      </div>
+      <div class="form-group<%= if Map.get(@errors, :email), do: " has-error", else: "" %>">
+        <label for="inputEmail">Email*</label>
+        <%= if Map.get(@errors, :email) do %>
+          <p style="color:red"><%= "#{elem(Map.get(@errors, :email), 2)}" %></p>
+        <%= end %>
+        <input type="text" name="email" class="form-control" id="inputEmail" placeholder="Email" value="<%= @params["email"] %>">
+      </div>
+      <div class="form-group<%= if Map.get(@errors, :mobile), do: " has-error", else: "" %>">
+        <label for="inputMobile">Mobile Phone</label>
+        <%= if Map.get(@errors, :mobile) do %>
+          <p style="color:red"><%= "#{elem(Map.get(@errors, :mobile), 2)}" %></p>
+        <%= else %>
+          <p>We'll use this to SMS you reminders so you never miss your tips.</p>
+        <%= end %>
+        <input type="text" name="mobile" class="form-control" id="inputMobile" placeholder="Mobile" value="<%= @params["mobile"] %>">
+      </div>
+      <div class="form-group<%= if Map.get(@errors, :password), do: " has-error", else: "" %>">
+        <label for="inputPassword">Password*</label>
+        <%= if Map.get(@errors, :password) do %>
+          <p style="color:red"><%= "#{elem(Map.get(@errors, :password), 2)}" %></p>
+        <%= else %>
+          <p>You'll use your password to login, write it down now.</p>
+        <%= end %>
+        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary">Join <%= @competition["name"] %></button>
+    </form>
+  <% end %>
+</div>
