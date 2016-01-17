@@ -34,19 +34,27 @@ defmodule Player do
   end
 
   def get_by_session(session_id) do
-    table("sessions")
+    session = table("sessions")
     |> filter(%{session_id: session_id})
     |> Footy.Database.run
     |> Map.get(:data)
-    |> List.first
+    if session do
+      List.first(session)
+    else
+      nil
+    end
   end
 
   defp get_by_email(email) do
-    table("players")
+    player = table("players")
     |> filter(%{email: clean_email(email)})
     |> Footy.Database.run
     |> Map.get(:data)
-    |> List.first
+    if player do
+      List.first(player)
+    else
+      nil
+    end
   end
 
   defp new(form_input) do

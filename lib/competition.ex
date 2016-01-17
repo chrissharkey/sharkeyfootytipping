@@ -28,9 +28,14 @@ defmodule Competition do
   end
 
   def get_all do
-    table("competitions") 
+    competitions = table("competitions") 
     |> Footy.Database.run
     |> Map.get(:data)
+    unless competitions do
+      []
+    else
+      competitions
+    end
   end
 
   def get(competition_id) do
@@ -65,12 +70,12 @@ defmodule Competition do
         competition_id = "TEMP"
         # @TODO: check result for success here, need to anyway to get the ID
         case join_competition(player_id, competition_id) do
-          {:error, reason} -> 
+          {:error, _} -> 
             delete_competition(competition_id)
             {:error, "An error occurred trying to create the competition"}
           {:ok, _} ->
             case make_administrator(player_id, competition_id) do
-              {:error, reason} -> 
+              {:error, _} -> 
                 delete_competition(competition_id)
                 {:error, "An error occurred trying to create the competition"}
               {:ok, _} -> {:ok, "Competition created"}
@@ -83,7 +88,7 @@ defmodule Competition do
     unless exists?(competition_id) do
       {:error, "You tried to join a competition which doesn't exist."}
     else
-      table("competitions_players")
+      result = table("competitions_players")
       |> insert(%{competition_id: competition_id, player_id: player_id})
       |> Footy.Database.run
       |> Map.get(:data)

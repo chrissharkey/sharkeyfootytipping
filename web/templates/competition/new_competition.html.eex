@@ -13,7 +13,6 @@
     <p>To create a new competition, fill in all of the fields below. This will create the competition and add you as a member of that competition.</p>
     <form method="post">
       <input type="hidden" name="_csrf_token" value="<%= csrf_token(@conn) %>">
-      <input type="hidden" name="competition_id" value="<%= @competition["id"] %>">
       <div class="form-group<%= if Map.get(@errors, :competition_name), do: " has-error", else: "" %>">
         <label for="inputCompetitionName">Competition Name*</label>
         <%= if Map.get(@errors, :competition_name) do %>
@@ -69,7 +68,7 @@
         <%= end %>
         <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
       </div>
-      <button type="submit" class="btn btn-primary">Join <%= @competition["name"] %></button>
+      <button type="submit" class="btn btn-primary">Create Competition</button>
     </form>
   <% end %>
 </div>
