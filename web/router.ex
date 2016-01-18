@@ -17,11 +17,16 @@ defmodule Footy.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/login", AuthController, :login
+    post "/login", AuthController, :login_post
+    get "/logout", AuthController, :logout
+    get "/login/select", AuthController, :select
     get "/join", CompetitionController, :join
     get "/join/:competition_id", CompetitionController, :join_competition
     post "/join/:competition_id", CompetitionController, :join_competition_post
     get "/new", CompetitionController, :new_competition
-    get "/init-table", PageController, :init
+    post "/new", CompetitionController, :new_competition_post
+    get "/competition/:competition_id", CompetitionController, :view_competition
   end
 
   # Other scopes may use custom stacks.

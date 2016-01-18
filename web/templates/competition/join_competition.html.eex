@@ -69,4 +69,8 @@
       <button type="submit" class="btn btn-primary">Join <%= @competition["name"] %></button>
     </form>
   <% end %>
+  <ul>
+    <li><a href="/join">Back to Join Competitions screen</a></li>
+    <li><a href="/">Back Home</a></li>
+  </ul>
 </div>

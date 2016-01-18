@@ -1,0 +1,9 @@
+<div class="col-lg-12">
+  <h2>Viewing <%= @competition["name"] %></h2>
+  <%= if @player do %>
+    <p>You're logged in as <strong><%= @player["first"] %> <%= @player["last"] %></strong></p>
+  <% end %>
+  <%= if @is_admin do %>
+    <p>You're are an administrator of this competition.</p>
+  <% end %>
+</div>

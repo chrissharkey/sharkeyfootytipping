@@ -1,13 +1,18 @@
 defmodule Competition do
-  import RethinkDB.Query, only: [table: 1, insert: 2, delete: 1, filter: 2]
+  import RethinkDB.Query, only: [table: 1, insert: 2, delete: 1, filter: 2, eq_join: 4, zip: 1]
   require Logger
 
   def new(session_id, form_input) do
-    case Player.find_or_create(session_id, form_input) do
-      {:error, reason} -> {:error, reason}
-      {:invalid, errors} -> {:invalid, errors}
-      {:ok, player_id} -> create_competition(player_id, form_input)
-      _ -> {:error, "An unknown error has occurred."}
+    short_name = get_short_name(form_input["competition_name"])
+    case valid_competition_name?(form_input["competition_name"], short_name) do
+      {:invalid, reason} -> {:invalid, %{"competition_name": {:invalid, "competition_name", reason}}}
+      {:ok, _} ->
+        case Player.find_or_create(session_id, form_input) do
+          {:error, reason} -> {:error, reason}
+          {:invalid, errors} -> {:invalid, errors}
+          {:ok, player_id} -> create_competition(player_id, form_input)
+          _ -> {:error, "An unknown error has occurred."}
+        end
     end
   end
 
@@ -38,6 +43,20 @@ defmodule Competition do
     end
   end
 
+  def get_competitions_for_player(player_id) do
+    competitions = table("competitions_players")
+    |> filter(%{player_id: player_id})
+    |> eq_join("competition_id", table("competitions"), %{index: "id"})
+    |> zip
+    |> Footy.Database.run
+    |> Map.get(:data)
+    unless competitions do
+      []
+    else
+      competitions
+    end
+  end
+
   def get(competition_id) do
     table("competitions")
     |> filter(%{id: competition_id})
@@ -50,7 +69,18 @@ defmodule Competition do
     unless player do
       false
     else
-      member = table("competitions_members")
+      member = table("competitions_players")
+      |> filter(%{competition_id: competition_id, player_id: player["id"]})
+      |> Footy.Database.run
+      if length(member.data) == 0, do: false, else: true
+    end
+  end
+
+  def is_admin?(competition_id, player) do
+    unless player do
+      false
+    else
+      member = table("competitions_admins")
       |> filter(%{competition_id: competition_id, player_id: player["id"]})
       |> Footy.Database.run
       if length(member.data) == 0, do: false, else: true
@@ -58,28 +88,30 @@ defmodule Competition do
   end
 
   def create_competition(player_id, form_input) do
-    # @TODO: validate competition name
-    short_name = Regex.replace(~r/[^a-z]/, String.downcase(form_input["competition_name"]), "")
+    short_name = get_short_name(form_input["competition_name"])
     case valid_competition_name?(form_input["competition_name"], short_name) do
-      {:invalid, message} -> {:invalid, message}
+      {:invalid, reason} -> {:invalid, %{"competition_name": {:invalid, "competition_name", reason}}}
       {:ok, _} ->
-        competition = table("competitions") 
+        result = table("competitions") 
         |> insert(%{short_name: short_name, name: form_input["competition_name"], owner_id: player_id}) 
         |> Footy.Database.run
-        Logger.debug "#{inspect competition}, competition is"
-        competition_id = "TEMP"
-        # @TODO: check result for success here, need to anyway to get the ID
-        case join_competition(player_id, competition_id) do
-          {:error, _} -> 
-            delete_competition(competition_id)
-            {:error, "An error occurred trying to create the competition"}
-          {:ok, _} ->
-            case make_administrator(player_id, competition_id) do
-              {:error, _} -> 
-                delete_competition(competition_id)
-                {:error, "An error occurred trying to create the competition"}
-              {:ok, _} -> {:ok, "Competition created"}
-            end
+        |> Map.get(:data)
+        unless result["inserted"] == 1 do
+          {:error, "Could not create competition."}
+        else
+          competition_id = List.first(result["generated_keys"])
+          case join_competition(player_id, competition_id) do
+            {:error, reason} -> 
+              delete_competition(competition_id)
+              {:error, "An error occurred trying to create the competition: #{reason}"}
+            {:ok, competition_id, player_id, _} ->
+              case make_administrator(player_id, competition_id) do
+                {:error, reason} -> 
+                  delete_competition(competition_id)
+                  {:error, "An error occurred trying to create the competition: #{reason}"}
+                {:ok, _} -> {:ok, competition_id, player_id, "Competition created."}
+              end
+          end
         end
     end
   end
@@ -92,10 +124,11 @@ defmodule Competition do
       |> insert(%{competition_id: competition_id, player_id: player_id})
       |> Footy.Database.run
       |> Map.get(:data)
+      Logger.debug("joining competition #{inspect result}")
       if result["inserted"] == 1 do
-        {:ok, "You have joined the competition."}
+        {:ok, competition_id, player_id, "You have joined the competition."}
       else
-        {:ok, "Error joining the competition."}
+        {:error, "Error joining the competition."}
       end
     end
   end
@@ -117,19 +150,25 @@ defmodule Competition do
   end
 
   defp valid_competition_name?(competition_name, short_name) do
-    # @TODO: check validity of competition_name
-    competition = table("competitions")
-    |> filter(%{short_name: short_name})
-    |> Footy.Database.run
-    if length(competition.data) == 0, do: {:ok, "Valid"}, else: {:invalid, "A competition already exists with that name."}
+    unless String.length(competition_name) > 7 do
+      {:invalid, "Must be at least 8 characters."}
+    else
+      competition = table("competitions")
+      |> filter(%{short_name: short_name})
+      |> Footy.Database.run
+      if length(competition.data) == 0, do: {:ok, "Valid"}, else: {:invalid, "A competition already exists with that name."}
+    end
   end
 
   defp exists?(id) do
-    Logger.debug("CHecking comp #{inspect id}")
     competition = table("competitions")
     |> filter(%{id: id})
     |> Footy.Database.run
     if length(competition.data) == 0, do: false, else: true
+  end
+
+  defp get_short_name(competition_name) do
+    Regex.replace(~r/[^a-z]/, String.downcase(competition_name), "")
   end
 
 end

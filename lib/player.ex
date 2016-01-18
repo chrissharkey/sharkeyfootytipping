@@ -1,16 +1,32 @@
 defmodule Player do
-  import RethinkDB.Query, only: [table: 1, insert: 2, delete: 1, filter: 2]
+  import RethinkDB.Query, only: [table: 1, insert: 2, delete: 1, filter: 2, eq_join: 4, zip: 1]
   import Comeonin.Bcrypt
   require Logger
   require String
 
   def login(email, password) do
     player = get_by_email(email)
-    if player and checkpw(password, player.hashed_password) do
-      # @TODO: in controller we need to conn = put_session(conn, :sessionid, "bar")      
-      create_session(player.id)
+    unless player do
+      {:error, "No player with that email address found. Please check your email address and try again."}
     else
-      {:error, "Invalid login"}
+      if checkpw(password, player.hashed_password) do
+        create_session(player.id)
+      else
+        {:error, "Incorrect password. Please try again or use the password reminder feature below."}
+      end
+    end
+  end
+
+  def create_session(player_id) do
+    session_id = UUID.uuid1()
+    result = table("sessions")
+    |> insert(%{session_id: session_id, player_id: player_id})
+    |> Footy.Database.run
+    |> Map.get(:data)
+    if result["inserted"] == 1 do
+      {:ok, session_id}
+    else
+      {:error, "Could not create session"}
     end
   end
 
@@ -34,12 +50,14 @@ defmodule Player do
   end
 
   def get_by_session(session_id) do
-    session = table("sessions")
+    result = table("sessions")
     |> filter(%{session_id: session_id})
+    |> eq_join("player_id", table("players"), %{index: "id"})
+    |> zip
     |> Footy.Database.run
     |> Map.get(:data)
-    if session do
-      List.first(session)
+    if result do
+      List.first(result)
     else
       nil
     end
@@ -86,25 +104,11 @@ defmodule Player do
     |> filter(%{email: player["email"]})
     |> Footy.Database.run
     |> Map.get(:data)
-    if response["e"] do
-      {:error, "Database error"}
+    if length(response) > 0 do
+      {:ok, true}
     else
-      if length(response) > 0 do
-        {:ok, true}
-      else
-        {:ok, false}
-      end
+      {:ok, false}
     end
-  end
-
-  defp create_session(player_id) do
-    Logger.debug "current time is #{Calendar.DateTime.now_utc}"
-    session_id = UUID.uuid1()
-    result = table("sessions")
-    |> insert(%{session_id: session_id, player_id: player_id, created_at: Calendar.DateTime.now_utc})
-    |> Footy.Database.run
-    Logger.debug "result of doing this", result
-    {:ok, session_id}
   end
 
   defp clean_email(email) do
@@ -120,7 +124,7 @@ defmodule Player do
         case field do
           :email -> 
             case Regex.run(~r/^[a-z0-9_\-\.]{2,}@[a-z0-9_\-\.]{2,}\.[a-z]{2,}/, form_input[Atom.to_string(field)]) do
-              [email] -> {:valid, field}
+              [_] -> {:valid, field}
               _ -> {:invalid, field, "Email address is not valid"}
             end
           _ -> {:valid, field}

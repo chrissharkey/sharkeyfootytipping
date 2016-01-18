@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Sharkey NRL footy tipping competition">
+    <meta name="author" content="Chris Sharkey">
 
     <title>Sharkey NRL Footy Tipping Competition</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
@@ -14,7 +14,7 @@
   <body>
     <div class="container" role="main">
       <div class="header">
-        <h1>Sharkey NRL Footy Tipping Competition</h1>
+        <h1><a href="/">Sharkey NRL Footy Tipping Competition</a></h1>
       </div>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
