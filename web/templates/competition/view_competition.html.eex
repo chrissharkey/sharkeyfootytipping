@@ -6,4 +6,6 @@
   <%= if @is_admin do %>
     <p>You're are an administrator of this competition.</p>
   <% end %>
+  Current round is <% @round.name %>
+  Leaderboard:   
 </div>
